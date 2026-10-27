@@ -1,0 +1,19 @@
+- name: Sanidi Seva ya Web na Docker
+  hosts: web_servers
+  become: yes
+
+  tasks:
+    - name: Sasisha mfumo wa apt cache
+      apt:
+        update_cache: yes
+
+    - name: Sakinisha Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Washa na uanzishe huduma ya Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes

@@ -1,0 +1,21 @@
+name: Tenesi DevOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chukua code kutoka GitHub
+        uses: actions/checkout@v3
+
+      - name: Weka Terraform kwenye Runner
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Jaribu kuangalia Terraform configuration
+        run: terraform init -backend=false
+
+      - name: Ujumbe wa Mafanikio ya Pipeline
+        run: echo "Pipeline imekamilisha kusoma miundombinu kwa mafanikio!"

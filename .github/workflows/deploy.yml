@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Chukua code kutoka GitHub
@@ -14,8 +14,18 @@ jobs:
       - name: Weka Terraform kwenye Runner
         uses: hashicorp/setup-terraform@v2
 
-      - name: Jaribu kuangalia Terraform configuration
-        run: terraform init -backend=false
+      - name: Weka na uhakiki Terraform Configuration
+        run: |
+          terraform init -backend=false
+          terraform validate
 
-      - name: Ujumbe wa Mafanikio ya Pipeline
-        run: echo "Pipeline imekamilisha kusoma miundombinu kwa mafanikio!"
+      - name: Jenga Docker Image ya App
+        run: docker build -t tenesi-cloud-app:latest .
+
+      - name: Weka na uhakiki Ansible Syntax
+        run: |
+          sudo apt-get update && sudo apt-get install -y ansible
+          ansible-playbook --syntax-check playbook.yml
+
+      - name: Ujumbe wa Mafanikio ya CI/CD
+        run: echo "Pipeline ya Tenesi Cloud App imepita vipimo vyote kwa mafanikio makubwa!"
